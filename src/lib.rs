@@ -34,6 +34,14 @@ impl Default for SessionType {
     }
 }
 
+/// This is a resource that may be inserted to tell the GGRS session to reset. This is useful when
+/// you wish to immediately restart a new GGRS session.
+/// 
+/// If you have a 1 frame delay between removing the GGRS session resources and creating a new one,
+/// then this is not necessary and the session will be automatically reset.
+#[derive(Clone, Copy)]
+pub struct ResetGGRSSession;
+
 /// Add this component to all entities you want to be loaded/saved on rollback.
 /// The `id` has to be unique. Consider using the `RollbackIdProvider` resource.
 #[derive(Component)]
