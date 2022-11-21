@@ -1,4 +1,4 @@
-use crate::{world_snapshot::WorldSnapshot, RollbackEventHook, SessionType};
+use crate::{world_snapshot::WorldSnapshot, ResetGGRSSession, RollbackEventHook, SessionType};
 use bevy::{ecs::entity::EntityMap, prelude::*, reflect::TypeRegistry};
 use ggrs::{
     Config, GGRSError, GGRSRequest, GameStateCell, InputStatus, P2PSession, PlayerHandle,
@@ -49,6 +49,9 @@ impl<T: Config + Send + Sync> Stage for GGRSStage<T> {
         }
         if let Some(mut sess) = world.get_resource_mut::<SpectatorSession<T>>() {
             sess.poll_remote_clients();
+        }
+        if world.remove_resource::<ResetGGRSSession>().is_some() {
+            self.reset();
         }
 
         // if we accumulated enough time, do steps
